@@ -1,8 +1,20 @@
-Coloque aqui os tres PDFs do Black Book, com exatamente estes nomes:
+Os PDFs desta pasta nao usam nome legivel de proposito.
 
-  black-book-tutory-parte-1.pdf
-  black-book-tutory-parte-2.pdf
-  black-book-tutory-parte-3.pdf
+O nome de cada arquivo vem do SHA-256 do sal mais a palavra-chave que
+voce anuncia ao vivo. Assim a URL do PDF nao aparece no codigo-fonte
+da pagina, e quem nao ouviu a palavra nao consegue montar o endereco.
 
-Os arquivos que estao nesta pasta agora sao placeholders vazios,
-so para os links nao darem 404 durante o teste. Sobrescreva os tres.
+Para publicar o PDF de uma noite:
+
+  1. python3 gerar-chave.py "a palavra da noite"
+  2. renomeie o PDF para o nome que o script imprimiu
+  3. coloque o arquivo aqui em pdfs/
+  4. git add . && git commit -m "parte 1" && git push
+     (a Vercel publica sozinha a cada push)
+
+O arquivo b23b2ce818fea808c462.pdf tem 25 bytes e e so um placeholder
+da palavra "tabuleiro", usado para testar o fluxo. Apague quando os
+PDFs de verdade entrarem.
+
+Lembrete: isso esconde o arquivo, nao protege o arquivo. Quem recebeu
+a palavra pode repassar o link para qualquer pessoa.
