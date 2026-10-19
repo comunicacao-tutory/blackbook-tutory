@@ -1,0 +1,8 @@
+Coloque aqui os tres PDFs do Black Book, com exatamente estes nomes:
+
+  black-book-tutory-parte-1.pdf
+  black-book-tutory-parte-2.pdf
+  black-book-tutory-parte-3.pdf
+
+Os arquivos que estao nesta pasta agora sao placeholders vazios,
+so para os links nao darem 404 durante o teste. Sobrescreva os tres.

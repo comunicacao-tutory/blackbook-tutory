@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Black Book Tutory — baixe o seu</title>
+<meta name="description" content="Baixe as três partes do Black Book Tutory. Estratégia de Black Friday para quem vende educação.">
+<meta property="og:title" content="Black Book Tutory — baixe o seu">
+<meta property="og:description" content="As três partes do Black Book, em PDF. Estratégia para quem vende educação.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#050403; --carvao:#0C0A07; --carvao-2:#121009;
+    --dourado:#D5AB69; --champanhe:#F2E0B6; --bronze:#C79B57;
+    --texto:#CFC9BD; --mudo:#9A9082; --apagado:#8A8176;
+    --borda:#2E2517; --borda-forte:#43351F; --erro:#FF9A8A;
+
+    --s-1:8px; --s-2:16px; --s-3:24px; --s-4:40px; --s-5:64px; --s-6:96px;
+    --raio:14px;
+    --t:220ms cubic-bezier(.4,0,.2,1);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--preto); color:var(--texto);
+    font-family:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+
+  /* ── atmosfera ──────────────────────────────────────── */
+  .atmosfera{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .atmosfera::before{content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(760px 520px at 50% -6%,  rgba(176,128,52,.26) 0%, rgba(5,4,3,0) 68%),
+      radial-gradient(520px 520px at -8% 34%,  rgba(140,102,42,.20) 0%, rgba(5,4,3,0) 70%),
+      radial-gradient(560px 540px at 108% 62%, rgba(140,102,42,.17) 0%, rgba(5,4,3,0) 70%),
+      radial-gradient(900px 420px at 50% 104%, rgba(120,86,34,.16) 0%, rgba(5,4,3,0) 72%);}
+  .atmosfera::after{content:"";position:absolute;inset:0;opacity:.055;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+
+  /* ── faixas diagonais com o nome da marca ─────────────── */
+  .faixas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 30%,rgba(0,0,0,.45) 46%,transparent 60%);
+            mask-image:linear-gradient(180deg,#000 0%,#000 30%,rgba(0,0,0,.45) 46%,transparent 60%);}
+
+  .faixa-diag{position:absolute;left:50%;width:260vmax;
+    display:flex;align-items:center;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);}
+
+  .faixa-diag.f1{top:11%;transform:translateX(-50%) rotate(-33deg);}
+  .faixa-diag.f2{top:11%;transform:translateX(-50%) rotate(33deg);}
+
+  .trilho{display:flex;flex:none;align-items:center;white-space:nowrap;will-change:transform;}
+  .f1 .trilho{animation:desliza 46s linear infinite;}
+  .f2 .trilho{animation:desliza 52s linear infinite reverse;}
+
+  @keyframes desliza{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  .trilho .item{display:inline-flex;align-items:center;gap:18px;padding:0 22px;}
+  .trilho .nome{font-size:clamp(15px,2.3vw,26px);font-weight:800;letter-spacing:.3em;
+    text-transform:uppercase;color:rgba(213,171,105,.13);white-space:nowrap;}
+  .trilho .marca{height:clamp(12px,1.7vw,19px);width:auto;opacity:.12;}
+  .trilho .ponto{width:5px;height:5px;border-radius:50%;background:rgba(213,171,105,.16);flex:none;}
+
+  @media (max-width:640px){
+    .faixa-diag.f1,.faixa-diag.f2{top:9%;}
+    .trilho .item{gap:12px;padding:0 14px;}
+  }
+
+
+  /* ══ AVISO DE ENCERRAMENTO ═══════════════════════════════
+     Duas variações. Troque AVISO na configuração do script:
+       'tira'  = faixa deslizante no topo da página
+       'canto' = selo fixo no canto superior direito
+       'nenhum'= desligado
+     ════════════════════════════════════════════════════════ */
+
+  /* ── variação TIRA ──────────────────────────────────── */
+  .tira{position:fixed;top:0;left:0;right:0;z-index:40;height:34px;overflow:hidden;
+    display:none;align-items:center;
+    background:linear-gradient(180deg,rgba(22,18,11,.96),rgba(10,8,5,.96));
+    border-bottom:1px solid rgba(213,171,105,.22);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+  body[data-aviso="tira"] .tira{display:flex;}
+  body[data-aviso="tira"] .pagina{padding-top:34px;}
+
+  .tira .corrida{display:flex;white-space:nowrap;will-change:transform;
+    animation:corre 34s linear infinite;}
+  @keyframes corre{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .tira .bloco{display:inline-flex;align-items:center;gap:11px;padding:0 20px;flex:none;}
+  .tira .txt{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+    color:#C4AE86;}
+  .tira .conta{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--champanhe);
+    font-variant-numeric:tabular-nums;}
+  .tira .losango{width:4px;height:4px;background:var(--dourado);transform:rotate(45deg);flex:none;}
+
+  /* ── variação CANTO: relógio de aba flutuante ───────── */
+  .canto{position:fixed;top:18px;right:18px;z-index:40;display:none;
+    flex-direction:column;align-items:center;gap:11px;padding:15px 17px 13px;
+    border-radius:18px;isolation:isolate;
+    background:
+      radial-gradient(120% 70% at 50% 0%, rgba(213,171,105,.10) 0%, rgba(0,0,0,0) 62%),
+      linear-gradient(170deg, rgba(30,24,16,.95) 0%, rgba(13,10,7,.96) 58%, rgba(8,6,4,.97) 100%);
+    -webkit-backdrop-filter:blur(12px) saturate(1.1);backdrop-filter:blur(12px) saturate(1.1);
+    box-shadow:
+      0 28px 60px -26px rgba(0,0,0,.96),
+      0 0 40px -20px rgba(213,171,105,.42),
+      inset 0 1px 0 rgba(242,224,182,.14);}
+  body[data-aviso="canto"] .canto{display:flex;}
+
+  /* fio de borda em degradê: forte no topo, some embaixo */
+  .canto::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;
+    padding:1px;
+    background:linear-gradient(170deg,rgba(242,224,182,.5),rgba(213,171,105,.2) 38%,rgba(213,171,105,.05) 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    mask-composite:exclude;}
+
+  /* cabeçalho no padrão da marca: filete, texto, filete */
+  .canto .cabecalho{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;}
+  .canto .cabecalho i{display:block;height:1px;flex:1;max-width:26px;
+    background:linear-gradient(90deg,rgba(199,155,87,0),rgba(199,155,87,.75));}
+  .canto .cabecalho i:last-child{background:linear-gradient(90deg,rgba(199,155,87,.75),rgba(199,155,87,0));}
+  .canto .rotulo{font-size:8px;font-weight:800;letter-spacing:.2em;
+    text-transform:uppercase;color:#C7B18B;white-space:nowrap;}
+
+  .canto .flip{gap:9px;}
+
+  /* aba com duas metades reais e brilho especular no topo */
+  .canto .peca .face{width:40px;height:44px;border-radius:9px;border:0;
+    background:
+      linear-gradient(180deg,#241D14 0%,#1C160E 49.4%,
+                      #0E0B07 50.6%,#090705 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(242,224,182,.16),
+      inset 0 -1px 0 rgba(0,0,0,.8),
+      inset 0 0 0 1px rgba(213,171,105,.09),
+      0 4px 8px -4px rgba(0,0,0,.95);}
+  /* vinco: sombra em cima da linha, luz embaixo */
+  .canto .peca .face::after{top:50%;height:1px;
+    background:rgba(0,0,0,.92);
+    box-shadow:0 1px 0 rgba(242,224,182,.13), 0 -2px 3px -2px rgba(0,0,0,.9);}
+  .canto .peca .face b{font-size:21px;letter-spacing:.02em;
+    text-shadow:0 1px 0 rgba(0,0,0,.85), 0 0 12px rgba(242,224,182,.22);}
+
+  /* pinos com acabamento metálico */
+  .canto .peca::before,.canto .peca::after{top:22px;width:4px;height:10px;border-radius:2px;
+    background:linear-gradient(180deg,#8A7250 0%,#5A4830 48%,#2F2619 100%);
+    box-shadow:0 1px 1px rgba(0,0,0,.7);}
+  .canto .peca::before{left:-2.5px;}
+  .canto .peca::after{right:-2.5px;}
+
+  .canto .peca i{font-size:7.5px;letter-spacing:.16em;color:#A08B66;}
+
+  /* abaixo de 640 o selo deixa de flutuar: vira bloco no topo da página,
+     centrado, para não bater na logo da Tutory */
+  @media (max-width:640px){
+    /* deixa de flutuar e vira um selo compacto, centrado, que
+       abraca o proprio conteudo em vez de esticar de ponta a ponta */
+    body[data-aviso="canto"] .canto{position:static;margin:18px auto 2px;
+      width:-webkit-max-content;width:max-content;max-width:calc(100% - 32px);}
+    .canto{padding:12px 16px 11px;gap:10px;border-radius:15px;}
+    .canto .flip{gap:7px;width:auto;margin-top:0;}
+    .canto .peca{flex:none;}
+    .canto .peca .face{width:34px;height:38px;border-radius:8px;}
+    .canto .peca .face b{font-size:18px;}
+    .canto .peca::before,.canto .peca::after{top:19px;height:8px;width:3px;}
+    .canto .peca i{font-size:7px;}
+    .canto .rotulo{font-size:7px;letter-spacing:.14em;}
+    .canto .cabecalho i{max-width:16px;}
+    .tira .bloco{gap:9px;padding:0 14px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .tira .corrida{animation:none!important;}
+  }
+
+  .pagina{position:relative;z-index:1;}
+  .faixa{width:100%;max-width:1120px;margin:0 auto;padding:0 clamp(16px,5vw,24px);}
+
+  .topo{padding-top:var(--s-4);}
+  .topo img{height:22px;width:auto;display:block;margin:0 auto;}
+
+  /* ── herói ──────────────────────────────────────────── */
+  .heroi{text-align:center;padding:var(--s-5) 0 var(--s-4);}
+  .heroi .wm{width:min(380px,78vw);height:auto;display:block;margin:0 auto var(--s-4);
+    filter:drop-shadow(0 0 34px rgba(176,128,52,.26));
+    animation:respira 7s ease-in-out infinite;}
+  @keyframes respira{
+    0%,100%{filter:drop-shadow(0 0 30px rgba(176,128,52,.20));}
+    50%    {filter:drop-shadow(0 0 46px rgba(201,160,90,.40));}
+  }
+  .sobrancelha{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:var(--s-3);}
+  .sobrancelha i{display:block;width:clamp(14px,5vw,28px);height:1px;background:var(--bronze);flex:none;}
+  .sobrancelha span{font-size:clamp(9.5px,2.6vw,11px);font-weight:700;letter-spacing:.24em;
+    color:var(--dourado);text-transform:uppercase;}
+  h1{font-size:clamp(27px,7vw,52px);line-height:1.1;font-weight:300;color:#fff;
+    letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;}
+  h1 b{font-weight:800;display:inline-block;transform:skewX(-10deg);}
+  .lead{margin:var(--s-3) auto 0;max-width:54ch;font-size:clamp(14.5px,2.4vw,17px);
+    color:var(--mudo);text-wrap:pretty;}
+  .lead strong{color:var(--texto);font-weight:700;}
+
+  /* ── cartões ────────────────────────────────────────── */
+  .partes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,268px),1fr));
+    gap:var(--s-3);padding:var(--s-4) 0 0;align-items:stretch;}
+
+  .parte{position:relative;display:flex;flex-direction:column;isolation:isolate;
+    background:linear-gradient(170deg,var(--carvao-2) 0%,var(--carvao) 62%);
+    border:1px solid var(--borda);border-radius:var(--raio);
+    padding:var(--s-3);overflow:hidden;
+    transition:border-color var(--t),transform var(--t),box-shadow var(--t);}
+
+  /* o livro mora no canto do cartao, atras do texto */
+  .parte .livro{position:absolute;z-index:-2;right:-30%;bottom:-24%;width:88%;height:84%;
+    background-position:center bottom;background-size:contain;background-repeat:no-repeat;
+    opacity:.44;filter:saturate(.7) brightness(.9);
+    transform:rotate(-4deg);transform-origin:bottom right;
+    transition:opacity var(--t),filter var(--t),transform 420ms cubic-bezier(.4,0,.2,1);}
+
+  /* veu que garante leitura do texto por cima do livro */
+  .parte::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      linear-gradient(112deg, var(--carvao) 0%, rgba(12,10,7,.98) 44%,
+                      rgba(12,10,7,.84) 62%, rgba(12,10,7,.5) 82%, rgba(12,10,7,.26) 100%),
+      linear-gradient(180deg, rgba(12,10,7,.92) 0%, rgba(12,10,7,.5) 34%, rgba(12,10,7,0) 60%);}
+
+  /* brilho de borda que acende no hover */
+  .parte::after{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:inherit;
+    padding:1px;opacity:0;transition:opacity var(--t);
+    background:linear-gradient(135deg,rgba(242,224,182,.55),rgba(213,171,105,.12) 42%,transparent 70%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    mask-composite:exclude;}
+
+  .parte[data-estado="liberado"]:hover,
+  .parte[data-estado="liberado"]:focus-within{
+    transform:translateY(-4px);
+    box-shadow:0 26px 54px -28px rgba(176,128,52,.55);}
+  .parte[data-estado="liberado"]:hover::after,
+  .parte[data-estado="liberado"]:focus-within::after{opacity:1;}
+  .parte[data-estado="liberado"]:hover .livro{
+    opacity:.66;filter:saturate(1) brightness(1.08);transform:rotate(-4deg) scale(1.07);}
+
+  /* bloqueado: livro mais apagado, acende de leve ao passar o mouse */
+  .parte[data-estado="bloqueado"] .livro{opacity:.2;filter:grayscale(.65) brightness(.66);}
+  .parte[data-estado="bloqueado"]:hover .livro{opacity:.34;filter:grayscale(.25) brightness(.84);}
+
+  /* bloqueio sutil: mesma caixa, so o peso da cor muda */
+  .parte[data-estado="bloqueado"]{border-color:#251D13;}
+  .parte[data-estado="bloqueado"] h2{color:#B3A99A;}
+  .parte[data-estado="bloqueado"] p{color:#8C8375;}
+  .parte[data-estado="bloqueado"] .selo{color:#A99269;}
+  .parte[data-estado="bloqueado"] .noite{color:#9A8868;}
+
+
+  /* ── cabecalho do cartao: selo a esquerda, relogio a direita ── */
+  .cabeca{display:flex;align-items:flex-start;justify-content:space-between;
+    gap:10px 12px;flex-wrap:wrap;}
+
+  .relogio{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+  .relogio .rot{font-size:7.5px;font-weight:800;letter-spacing:.18em;
+    text-transform:uppercase;color:#A4906C;white-space:nowrap;}
+
+  .flip{display:flex;gap:7px;}
+
+  .peca{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;}
+
+  /* a aba */
+  .peca .face{position:relative;display:flex;align-items:center;justify-content:center;
+    width:33px;height:35px;border-radius:7px;border:1px solid #2A2216;overflow:hidden;
+    background:linear-gradient(180deg,#1E1912 0%,#191309 49.5%,#100C07 50.5%,#0B0906 100%);
+    box-shadow:inset 0 1px 0 rgba(213,171,105,.10), 0 2px 4px -2px rgba(0,0,0,.85);}
+  /* vinco do meio */
+  .peca .face::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+    background:rgba(0,0,0,.8);box-shadow:0 1px 0 rgba(213,171,105,.09);}
+  .peca .face b{position:relative;z-index:1;font-size:17px;font-weight:800;line-height:1;
+    color:var(--champanhe);font-variant-numeric:tabular-nums;
+    text-shadow:0 1px 1px rgba(0,0,0,.7);}
+
+  /* pinos do eixo */
+  .peca::before,.peca::after{content:"";position:absolute;top:17.5px;width:3px;height:8px;
+    border-radius:1.5px;background:#453827;transform:translateY(-50%);}
+  .peca::before{left:-2px;}
+  .peca::after{right:-2px;}
+
+  .peca i{font-size:7px;font-style:normal;font-weight:800;letter-spacing:.1em;
+    text-transform:uppercase;color:#9C8864;}
+
+  .relogio[data-urgente="sim"] .peca .face{border-color:rgba(255,154,138,.34);}
+  .relogio[data-urgente="sim"] .peca .face b{color:#FFC2B4;}
+  .relogio[data-urgente="sim"] .peca i,
+  .relogio[data-urgente="sim"] .rot{color:#D59B8C;}
+  .relogio[data-urgente="sim"] .peca::before,
+  .relogio[data-urgente="sim"] .peca::after{background:#6B4038;}
+
+  .relogio[data-fase="fim"] .tempo{color:#857C6E;font-size:12px;letter-spacing:.1em;}
+
+  /* ── no celular o relogio sai do canto do cartao e vira uma
+       regua de abas ocupando a largura inteira, com o rotulo
+       alinhado na mesma linha do selo ───────────────────── */
+  @media (max-width:560px){
+    .cabeca{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0;}
+    .cabeca .selo{grid-column:1;grid-row:1;}
+
+    /* dissolve o involucro para o rotulo e as abas virarem
+       itens da propria grade do cabecalho */
+    .relogio[data-alvo]{display:contents;}
+    .cabeca .rot{grid-column:2;grid-row:1;justify-self:end;align-self:center;
+      font-size:8px;letter-spacing:.16em;}
+
+    .cabeca .flip{grid-column:1 / -1;grid-row:2;width:100%;margin-top:12px;gap:8px;}
+    .cabeca .peca{flex:1 1 0;min-width:0;gap:6px;}
+    .cabeca .peca .face{width:100%;height:50px;border-radius:9px;}
+    .cabeca .peca .face b{font-size:22px;}
+    .cabeca .peca::before,.cabeca .peca::after{top:25px;height:9px;width:3px;}
+    .cabeca .peca i{font-size:8px;letter-spacing:.14em;}
+
+    /* a regua precisa respirar antes do titulo */
+    .parte h2{margin-top:20px;}
+  }
+
+  /* telas bem estreitas: so afina as abas, o desenho continua o mesmo */
+  @media (max-width:360px){
+    .cabeca .flip{gap:6px;}
+    .cabeca .peca .face{height:46px;}
+    .cabeca .peca .face b{font-size:20px;}
+    .cabeca .peca::before,.cabeca .peca::after{top:23px;height:8px;}
+    .cabeca .peca i{font-size:7.5px;letter-spacing:.1em;}
+  }
+
+  .selo{display:inline-flex;align-items:center;font-size:11px;font-weight:800;
+    letter-spacing:.2em;color:var(--dourado);text-transform:uppercase;}
+
+  .parte h2{margin:14px 0 6px;font-size:clamp(18px,4.4vw,20px);line-height:1.25;
+    font-weight:800;color:#fff;letter-spacing:-.01em;}
+  .parte p{font-size:14.5px;line-height:1.6;color:var(--mudo);flex:1;}
+  .noite{display:block;margin-top:var(--s-2);font-size:11px;font-weight:700;
+    letter-spacing:.14em;color:var(--bronze);text-transform:uppercase;}
+
+  /* ── botões ─────────────────────────────────────────── */
+  .acao{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;margin-top:var(--s-3);min-height:48px;padding:14px 18px;
+    border:0;border-radius:999px;font-family:inherit;font-size:clamp(11.5px,2.9vw,12.5px);
+    font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+    cursor:pointer;text-align:center;transition:filter var(--t),transform var(--t);}
+  .acao svg{width:17px;height:17px;flex:none;}
+  .acao.liberar{position:relative;overflow:hidden;color:#0A0603;
+    background:linear-gradient(100deg,#C9A05A 0%,#F2E0B6 26%,#D9B274 52%,#C08F46 78%,#AE7C34 100%);
+    box-shadow:0 5px 16px -9px rgba(176,128,52,.6);}
+  .acao.liberar > *{position:relative;z-index:1;}
+  /* lamina de luz que cruza o metal */
+  .acao.liberar::after{content:"";position:absolute;top:0;bottom:0;left:-62%;width:46%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.62),transparent);
+    transform:skewX(-18deg);transition:left 620ms cubic-bezier(.3,0,.2,1);}
+  .acao.liberar:hover{filter:brightness(1.07);transform:translateY(-1px);
+    box-shadow:0 10px 24px -9px rgba(176,128,52,.7);}
+  .acao.liberar:hover::after{left:122%;}
+  .acao.liberar:active{transform:translateY(0);}
+  .acao.travado{background:transparent;border:1px solid #3A2F1F;color:#A79B88;cursor:not-allowed;letter-spacing:.1em;}
+  .acao.travado svg{opacity:.85;}
+
+  a:focus-visible,button:focus-visible,input:focus-visible{
+    outline:2px solid var(--champanhe);outline-offset:3px;}
+
+  /* ── nota ───────────────────────────────────────────── */
+  .nota{display:flex;gap:12px;align-items:flex-start;max-width:620px;margin:var(--s-5) auto 0;
+    padding:var(--s-3);border:1px solid var(--borda);border-radius:var(--raio);
+    background:rgba(12,10,7,.6);}
+  .nota svg{width:18px;height:18px;flex:none;color:var(--dourado);margin-top:2px;}
+  .nota p{font-size:14px;line-height:1.6;color:var(--mudo);}
+  .nota strong{color:var(--texto);font-weight:700;}
+
+  /* ── rodapé ─────────────────────────────────────────── */
+  .rodape{padding-top:var(--s-6);padding-bottom:var(--s-5);text-align:center;}
+  .rodape .risco{width:46px;height:2px;margin:0 auto var(--s-4);border-radius:2px;
+    background:linear-gradient(90deg,rgba(213,171,105,.15),var(--dourado),rgba(213,171,105,.15));}
+  .rodape .marca{height:20px;width:auto;display:block;margin:0 auto var(--s-3);opacity:.9;}
+
+  .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:var(--s-1);margin-bottom:var(--s-3);}
+  .redes a{display:inline-flex;align-items:center;justify-content:center;
+    width:44px;height:44px;border-radius:999px;color:var(--apagado);
+    transition:color var(--t),background-color var(--t);}
+  .redes a:hover{color:var(--champanhe);background:rgba(213,171,105,.10);
+    transform:translateY(-2px);box-shadow:0 0 22px -6px rgba(213,171,105,.5);}
+  .redes a{transition:color var(--t),background-color var(--t),transform var(--t),box-shadow var(--t);}
+  .redes svg{width:19px;height:19px;}
+
+  /* area de toque cheia, 44px, como nos outros botoes */
+  .rodape .site{display:inline-flex;align-items:center;justify-content:center;
+    min-height:44px;padding:8px 14px;font-size:13px;
+    color:var(--dourado);text-decoration:none;border-radius:8px;}
+  .rodape .site:hover{text-decoration:underline;}
+  .rodape .fino{margin-top:var(--s-1);font-size:12.5px;color:var(--apagado);}
+
+  /* ── diálogo ────────────────────────────────────────── */
+  .veu{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
+    padding:clamp(14px,4vw,24px);background:rgba(2,2,1,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    overflow-y:auto;}
+  .veu[data-aberto="sim"]{display:flex;}
+
+  .dialogo{width:100%;max-width:440px;margin:auto;
+    background:linear-gradient(170deg,#141107 0%,#0A0806 70%);
+    border:1px solid var(--borda-forte);border-radius:18px;
+    padding:var(--s-4) var(--s-3) var(--s-3);
+    box-shadow:0 40px 90px -40px rgba(0,0,0,.95);text-align:center;}
+  .dialogo .cadeado{width:38px;height:38px;margin:0 auto var(--s-2);color:var(--dourado);}
+  .dialogo .qual{font-size:11px;font-weight:800;letter-spacing:.2em;color:var(--dourado);text-transform:uppercase;}
+  .dialogo h3{margin:10px 0 8px;font-size:clamp(19px,5vw,22px);line-height:1.25;font-weight:800;color:#fff;}
+  .dialogo .ajuda{font-size:14px;line-height:1.55;color:var(--mudo);}
+
+  .campo{margin-top:var(--s-3);text-align:left;}
+  .campo label{display:block;font-size:11px;font-weight:800;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--bronze);margin-bottom:8px;}
+  .campo input{width:100%;min-height:52px;padding:14px 16px;background:#070604;
+    border:1px solid #33291A;border-radius:12px;color:#fff;font-family:inherit;
+    font-size:16px;font-weight:600;letter-spacing:.03em;}
+  .campo input::placeholder{color:#6B6354;font-weight:400;letter-spacing:0;}
+  .campo input[aria-invalid="true"]{border-color:#8A4438;}
+
+  .recado{display:none;margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--erro);}
+  .recado[data-ver="sim"]{display:block;}
+
+  .dialogo .acao[disabled]{opacity:.65;cursor:progress;}
+
+  /* passos do diálogo */
+  .passo[hidden]{display:none;}
+  .dialogo .pergunta{margin:10px 0 6px;font-size:clamp(18px,4.6vw,21px);line-height:1.3;
+    font-weight:800;color:#fff;text-wrap:balance;}
+  .dupla{display:flex;gap:10px;margin-top:var(--s-3);}
+  .dupla .acao{margin-top:0;}
+  .acao.nao{background:transparent;border:1px solid #3A2F1F;color:#BFB3A0;}
+  .acao.nao:hover{border-color:#54442C;color:#fff;background:rgba(213,171,105,.06);}
+
+  /* o "Nao" ocupa so o que precisa, o "Sim" fica com o resto
+     e nunca quebra o rotulo em duas linhas */
+  .dupla .acao{white-space:nowrap;}
+  .dupla .acao.nao{flex:0 0 auto;width:auto;min-width:88px;padding-left:16px;padding-right:16px;}
+  .dupla .acao.liberar{flex:1 1 0;width:auto;min-width:0;}
+
+  /* telas bem estreitas: os dois empilham, acao principal em cima */
+  @media (max-width:359px){
+    .dupla{flex-direction:column-reverse;gap:9px;}
+    .dupla .acao,.dupla .acao.nao{width:100%;flex:0 0 auto;}
+  }
+  .fechar{margin-top:var(--s-2);min-height:44px;background:none;border:0;cursor:pointer;
+    font-family:inherit;font-size:13px;color:var(--mudo);padding:10px 14px;border-radius:8px;}
+  .fechar:hover{color:var(--texto);}
+
+  /* ── entrada suave ──────────────────────────────────── */
+  .sobe{opacity:1;transform:none;}
+  html.js .sobe{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  html.js .sobe.visivel{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;}
+    html.js .sobe{opacity:1!important;transform:none!important;}
+    .acao.liberar::after{display:none;}
+    .parte .livro{transform:rotate(-4deg)!important;}
+    .trilho{animation:none!important;}
+  }
+
+  @media (max-width:640px){
+    .topo{padding-top:var(--s-3);}
+    .heroi{padding:var(--s-4) 0 var(--s-3);}
+    .partes{padding:var(--s-3) 0 0;gap:var(--s-2);}
+    .nota{margin-top:var(--s-4);}
+    .parte{padding:var(--s-2) var(--s-3) var(--s-3);}
+    footer{padding:var(--s-5) 0 var(--s-4);}
+    .rodape .risco{margin-bottom:var(--s-3);}
+  }
+</style>
+</head>
+<body>
+
+<div class="atmosfera" aria-hidden="true"></div>
+
+<div class="faixas" aria-hidden="true">
+  <div class="faixa-diag f1"><div class="trilho"><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span></div></div>
+  <div class="faixa-diag f2"><div class="trilho"><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span><span class="item"><img class="marca" src="assets/tutory-logo-white_header.png" alt=""><span class="nome">Black Book Tutory</span><span class="ponto"></span></span></div></div>
+</div>
+
+
+<div class="tira" id="tira" aria-hidden="true"><div class="corrida" id="corrida"></div></div>
+
+<div class="canto" id="canto" role="status" aria-live="off">
+  <span class="cabecalho">
+    <i aria-hidden="true"></i>
+    <span class="rotulo">O sistema encerra em</span>
+    <i aria-hidden="true"></i>
+  </span>
+  <span class="flip" id="canto-flip"></span>
+</div>
+
+<div class="pagina">
+
+  <header class="topo faixa">
+    <img src="assets/tutory-logo-white_header.png" alt="Tutory" width="110" height="22">
+  </header>
+
+  <main class="faixa">
+
+    <section class="heroi">
+      <img class="wm" src="assets/wordmark-horizontal.png" alt="Black Book Tutory" width="380" height="62">
+      <div class="sobrancelha"><i></i><span>Seu material está aqui</span><i></i></div>
+      <h1>Baixe o livro que você<br><b>acompanhou ao vivo.</b></h1>
+      <p class="lead">
+        As três partes do Black Book. Uma abre por noite, e para
+        entrar em cada uma você usa a <strong>senha que a gente anuncia ao vivo</strong>.
+      </p>
+    </section>
+
+    <section class="partes" id="partes" aria-label="Partes do Black Book para download"></section>
+
+    <div class="nota sobe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+      <p><strong>Quem vê uma noite leva uma peça. Quem vê as três leva o mapa.</strong> Cada parte só faz sentido completo junto com as outras.</p>
+    </div>
+
+  </main>
+
+  <footer class="rodape faixa">
+    <div class="risco" aria-hidden="true"></div>
+    <img class="marca" src="assets/tutory-logo-white_header.png" alt="Tutory" width="100" height="20">
+
+    <nav class="redes" aria-label="Redes sociais da Tutory">
+      <a href="https://www.instagram.com/tutoryoficial/" target="_blank" rel="noopener" aria-label="Instagram da Tutory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@tutoryoficial" target="_blank" rel="noopener" aria-label="YouTube da Tutory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.4v5.2l4.6-2.6z" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://linkedin.com/company/tutoryedtech" target="_blank" rel="noopener" aria-label="LinkedIn da Tutory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.2 10.4v6.2"/><circle cx="7.2" cy="7.6" r="1.05" fill="currentColor" stroke="none"/><path d="M11.4 16.6v-3.4a2.1 2.1 0 0 1 4.2 0v3.4"/><path d="M11.4 10.4v1.2"/></svg>
+      </a>
+      <a href="https://facebook.com/plataforma.tutory" target="_blank" rel="noopener" aria-label="Facebook da Tutory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M15.2 8.1h-1.3c-1 0-1.6.6-1.6 1.6v1.5h2.7l-.4 2.7h-2.3v5"/><path d="M10.1 11.2h2.2"/></svg>
+      </a>
+    </nav>
+
+    <a class="site" href="https://www.tutory.com.br" target="_blank" rel="noopener">tutory.com.br</a>
+    <p class="fino">Black Book Tutory · 2026</p>
+  </footer>
+
+</div>
+
+<!-- diálogo da palavra-chave -->
+<div class="veu" id="veu" data-aberto="nao">
+  <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="dlg-titulo" id="dialogo">
+    <svg class="cadeado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/>
+    </svg>
+    <p class="qual" id="dlg-qual">Parte 1</p>
+
+    <div class="passo" id="passo-senha">
+      <h3 id="dlg-titulo">Qual é a senha?</h3>
+      <p class="ajuda">A gente anunciou ao vivo na noite desta parte.</p>
+
+      <form id="forma" novalidate>
+        <div class="campo">
+          <label for="chave">Senha da noite</label>
+          <input id="chave" name="chave" type="text" inputmode="text"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 placeholder="digite aqui" aria-describedby="recado">
+          <p class="recado" id="recado" role="alert" data-ver="nao"></p>
+        </div>
+        <button class="acao liberar" type="submit" id="enviar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+          <span id="enviar-texto">Liberar download</span>
+        </button>
+      </form>
+
+      <button class="fechar" type="button" id="fechar">Cancelar</button>
+    </div>
+
+    <div class="passo" id="passo-confirma" hidden>
+      <p class="pergunta" id="confirma-texto">Você deseja baixar o Black Book parte 1 completo?</p>
+      <p class="ajuda">O arquivo começa a baixar na hora.</p>
+      <div class="dupla">
+        <button class="acao nao" type="button" id="btn-nao">Não</button>
+        <button class="acao liberar" type="button" id="btn-sim">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+          <span id="sim-texto">Sim, baixar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════════════════════════════════════
+     CONFIGURAÇÃO — é só aqui que você mexe.
+
+     abre / fecha : janela em que a parte fica disponível (fuso -03:00).
+                    Antes de 'abre'  o cartão espera e mostra a contagem.
+                    Entre os dois    o cartão libera e conta para o fim.
+                    Depois de 'fecha' o cartão encerra.
+
+     forcar : opcional. 'aberto' ou 'fechado' ignora o relógio.
+              Use para demonstrar antes do evento e remova no dia.
+
+     A senha NÃO fica aqui. O PDF é guardado com um nome derivado
+     dela. Rode  python3 gerar-chave.py "sua senha"  para saber
+     com que nome salvar cada arquivo.
+     ══════════════════════════════════════════════════════ */
+
+  var SAL = 'blackbook-tutory-2026';   // idêntico ao SAL do gerar-chave.py
+
+  /* aviso de encerramento do sistema inteiro.
+     AVISO: 'tira' (faixa no topo) | 'canto' (selo à direita) | 'nenhum' */
+  var AVISO   = 'canto';
+  var ENCERRA = '2026-10-23T10:00:00-03:00';
+  var FRASE   = 'O sistema se encerrará às 10h do dia 23';
+
+  var PARTES = [
+    { n:1, titulo:'O tabuleiro',     texto:'As novidades da plataforma e o terreno onde a sua oferta vai ser construída.',
+      noite:'Noite 1 · 20 de outubro', quando:'20 de outubro às 20h', livro:'assets/livro-1.png',
+      abre:'2026-10-20T20:00:00-03:00', fecha:'2026-10-21T10:00:00-03:00', forcar:'aberto' },
+
+    { n:2, titulo:'Os movimentos',   texto:'Como construir a oferta, aquecer a audiência e conduzir o aluno até a decisão.',
+      noite:'Noite 2 · 21 de outubro', quando:'21 de outubro às 20h', livro:'assets/livro-2.png',
+      abre:'2026-10-21T20:00:00-03:00', fecha:'2026-10-22T10:00:00-03:00' },
+
+    { n:3, titulo:'O passo a passo', texto:'A Sala de Guerra: cases reais e o roteiro para colocar tudo em prática.',
+      noite:'Noite 3 · 22 de outubro', quando:'22 de outubro às 17h', livro:'assets/livro-3.png',
+      abre:'2026-10-22T17:00:00-03:00', fecha:'2026-10-23T10:00:00-03:00' }
+  ];
+
+  /* ══════════════════════════════════════════════════════ */
+
+  var raiz    = document.documentElement;
+  var grade   = document.getElementById('partes');
+  var veu     = document.getElementById('veu');
+  var dialogo = document.getElementById('dialogo');
+  var forma   = document.getElementById('forma');
+  var campo   = document.getElementById('chave');
+  var recado  = document.getElementById('recado');
+  var enviar  = document.getElementById('enviar');
+  var rotulo  = document.getElementById('enviar-texto');
+  var dlgQual = document.getElementById('dlg-qual');
+  var passoSenha = document.getElementById('passo-senha');
+  var passoConf  = document.getElementById('passo-confirma');
+  var confTexto  = document.getElementById('confirma-texto');
+  var btnSim = document.getElementById('btn-sim');
+  var btnNao = document.getElementById('btn-nao');
+  var simTexto = document.getElementById('sim-texto');
+  var ultimoFoco = null, parteAtual = null, caminhoPronto = null;
+
+  var SETA    = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>';
+  var CADEADO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
+
+  function normalizar(p) {
+    return p.toLowerCase()
+            .normalize('NFD').replace(/[̀-ͯ]/g, '')
+            .replace(/[^a-z0-9]/g, '');
+  }
+
+  function hex(buf) {
+    return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+      return ('0' + b.toString(16)).slice(-2);
+    }).join('');
+  }
+
+  function caminhoDo(palavra) {
+    var base = normalizar(palavra);
+    if (!base) return Promise.resolve(null);
+    var dados = new TextEncoder().encode(SAL + base);
+    return crypto.subtle.digest('SHA-256', dados).then(function (buf) {
+      return 'pdfs/' + hex(buf).slice(0, 20) + '.pdf';
+    });
+  }
+
+  /* ── em que fase cada parte está, agora ────────────── */
+  function faseDe(p, agora) {
+    if (p.forcar === 'aberto')  return 'aberto';
+    if (p.forcar === 'fechado') return 'espera';
+    if (agora < new Date(p.abre))  return 'espera';
+    if (agora > new Date(p.fecha)) return 'fim';
+    return 'aberto';
+  }
+
+  /* quebra o tempo restante em dia / hora / minuto / segundo */
+  function parte(ms) {
+    if (ms < 0) ms = 0;
+    var s = Math.floor(ms / 1000);
+    var d = Math.floor(s / 86400); s -= d * 86400;
+    var hh = Math.floor(s / 3600); s -= hh * 3600;
+    var mm = Math.floor(s / 60);
+    return { d: d, h: hh, m: mm, s: s - mm * 60 };
+  }
+  var doisD = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  function campos(ms) {
+    var t = parte(ms);
+    var aba = function (n, rotulo) {
+      return '<span class="peca"><span class="face"><b>' + doisD(n) + '</b></span>' +
+             '<i>' + rotulo + '</i></span>';
+    };
+    return '<span class="flip">' +
+      aba(t.d, 'dias') + aba(t.h, 'hrs') + aba(t.m, 'min') + aba(t.s, 'seg') +
+      '</span>';
+  }
+
+  function relogioDe(p, agora, fase) {
+    if (fase === 'fim') {
+      return '<span class="relogio" data-fase="fim"><span class="rot">Janela</span>' +
+             '<span class="tempo">encerrada</span></span>';
+    }
+    var alvo = fase === 'aberto' ? new Date(p.fecha) : new Date(p.abre);
+    var resta = alvo - agora;
+    var urgente = (fase === 'aberto' && resta < 2 * 3600 * 1000) ? 'sim' : 'nao';
+    return '<span class="relogio" data-fase="' + fase + '" data-urgente="' + urgente + '" ' +
+           'data-alvo="' + alvo.getTime() + '" data-parte="' + p.n + '">' +
+           '<span class="rot">' + (fase === 'aberto' ? 'Fecha em' : 'Abre em') + '</span>' +
+           campos(resta) + '</span>';
+  }
+
+  /* ── monta os cartões ──────────────────────────────── */
+  function desenha(p, agora) {
+    var fase = faseDe(p, agora);
+    var aberto = fase === 'aberto';
+
+    var botao;
+    if (aberto) {
+      botao = '<button class="acao liberar" type="button" data-parte="' + p.n + '">' +
+              SETA + 'Baixar a Parte ' + p.n + '</button>';
+    } else if (fase === 'fim') {
+      botao = '<button class="acao travado" type="button" disabled aria-disabled="true">' +
+              CADEADO + 'Download encerrado</button>';
+    } else {
+      botao = '<button class="acao travado" type="button" disabled aria-disabled="true">' +
+              CADEADO + 'Abre ' + p.quando + '</button>';
+    }
+
+    return '<span class="livro" aria-hidden="true" style="background-image:url(' + p.livro + ')"></span>' +
+      '<div class="cabeca"><span class="selo">Parte ' + p.n + '</span>' +
+      relogioDe(p, agora, fase) + '</div>' +
+      '<h2>' + p.titulo + '</h2>' +
+      '<p>' + p.texto + '</p>' +
+      '<span class="noite">' + p.noite + '</span>' +
+      botao;
+  }
+
+  var cartoes = {};
+
+  PARTES.forEach(function (p) {
+    var agora = new Date();
+    var art = document.createElement('article');
+    art.className = 'parte sobe';
+    art.setAttribute('data-estado', faseDe(p, agora) === 'aberto' ? 'liberado' : 'bloqueado');
+    art.innerHTML = desenha(p, agora);
+    grade.appendChild(art);
+    cartoes[p.n] = { el: art, fase: faseDe(p, agora) };
+  });
+
+  /* ── o relógio anda ────────────────────────────────── */
+  setInterval(function () {
+    var agora = new Date();
+    PARTES.forEach(function (p) {
+      var guardado = cartoes[p.n];
+      var fase = faseDe(p, agora);
+
+      if (fase !== guardado.fase) {           // virou a chave: redesenha o cartão
+        guardado.fase = fase;
+        guardado.el.setAttribute('data-estado', fase === 'aberto' ? 'liberado' : 'bloqueado');
+        guardado.el.innerHTML = desenha(p, agora);
+        guardado.el.classList.add('visivel');
+        return;
+      }
+
+      var rel = guardado.el.querySelector('.relogio[data-alvo]');
+      if (!rel) return;
+      var resta = Number(rel.getAttribute('data-alvo')) - agora.getTime();
+      var t = parte(resta);
+      var alvos = rel.querySelectorAll('.peca .face b');
+      alvos[0].textContent = doisD(t.d);
+      alvos[1].textContent = doisD(t.h);
+      alvos[2].textContent = doisD(t.m);
+      alvos[3].textContent = doisD(t.s);
+      if (fase === 'aberto') {
+        rel.setAttribute('data-urgente', resta < 2 * 3600 * 1000 ? 'sim' : 'nao');
+      }
+    });
+  }, 1000);
+
+  /* ── diálogo ───────────────────────────────────────── */
+  function abrir(n) {
+    parteAtual = n;
+    ultimoFoco = document.activeElement;
+    dlgQual.textContent = 'Parte ' + n;
+    campo.value = '';
+    caminhoPronto = null;
+    passoSenha.hidden = false;
+    passoConf.hidden = true;
+    limparRecado();
+    veu.setAttribute('data-aberto', 'sim');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { campo.focus(); }, 40);
+  }
+
+  function fechar() {
+    veu.setAttribute('data-aberto', 'nao');
+    document.body.style.overflow = '';
+    if (ultimoFoco) ultimoFoco.focus();
+  }
+
+  function erro(txt) {
+    recado.textContent = txt;
+    recado.setAttribute('data-ver', 'sim');
+    campo.setAttribute('aria-invalid', 'true');
+  }
+  function limparRecado() {
+    recado.textContent = '';
+    recado.setAttribute('data-ver', 'nao');
+    campo.removeAttribute('aria-invalid');
+  }
+
+  grade.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-parte]');
+    if (b) abrir(b.getAttribute('data-parte'));
+  });
+
+  document.getElementById('fechar').addEventListener('click', fechar);
+  veu.addEventListener('mousedown', function (e) { if (e.target === veu) fechar(); });
+  campo.addEventListener('input', limparRecado);
+
+  document.addEventListener('keydown', function (e) {
+    if (veu.getAttribute('data-aberto') !== 'sim') return;
+    if (e.key === 'Escape') { fechar(); return; }
+    if (e.key !== 'Tab') return;
+    var foco = [].filter.call(dialogo.querySelectorAll('input,button'),
+                              function (e) { return e.offsetParent !== null && !e.disabled; });
+    var primeiro = foco[0], ultimo = foco[foco.length - 1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  });
+
+  forma.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var palavra = campo.value.trim();
+
+    if (!normalizar(palavra)) {
+      erro('Digite a senha que a gente anunciou ao vivo.');
+      campo.focus();
+      return;
+    }
+
+    enviar.disabled = true;
+    rotulo.textContent = 'Conferindo…';
+    limparRecado();
+
+    caminhoDo(palavra).then(function (caminho) {
+      return fetch(caminho, { method:'HEAD', cache:'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error('nao encontrado');
+        caminhoPronto = caminho;
+        confTexto.textContent =
+          'Você deseja baixar o Black Book parte ' + parteAtual + ' completo?';
+        passoSenha.hidden = true;
+        passoConf.hidden = false;
+        simTexto.textContent = 'Sim, baixar';
+        btnSim.disabled = false;
+        setTimeout(function () { btnSim.focus(); }, 40);
+      });
+    }).catch(function () {
+      erro('Essa senha não abre esta parte. Confira e tente de novo.');
+      campo.select(); campo.focus();
+    }).then(function () {
+      setTimeout(function () {
+        enviar.disabled = false;
+        rotulo.textContent = 'Liberar download';
+      }, 900);
+    });
+  });
+
+  btnNao.addEventListener('click', fechar);
+
+  btnSim.addEventListener('click', function () {
+    if (!caminhoPronto) return;
+    btnSim.disabled = true;
+    simTexto.textContent = 'Baixando…';
+    var a = document.createElement('a');
+    a.href = caminhoPronto;
+    a.download = 'Black Book Tutory - Parte ' + parteAtual + '.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(fechar, 900);
+  });
+
+  /* ── aviso de encerramento ─────────────────────────── */
+  (function () {
+    if (AVISO !== 'tira' && AVISO !== 'canto') return;
+
+    var fim = new Date(ENCERRA);
+    if (new Date() > fim) return;          // prazo já passou: não mostra nada
+
+    document.body.setAttribute('data-aviso', AVISO);
+
+    function texto() {
+      var t = parte(fim - new Date());
+      return doisD(t.d) + 'd ' + doisD(t.h) + 'h ' + doisD(t.m) + 'm ' + doisD(t.s) + 's';
+    }
+
+    if (AVISO === 'tira') {
+      var corrida = document.getElementById('corrida');
+      var bloco =
+        '<span class="bloco">' +
+          '<span class="txt">' + FRASE + '</span>' +
+          '<span class="losango"></span>' +
+          '<span class="conta">' + texto() + '</span>' +
+          '<span class="losango"></span>' +
+        '</span>';
+      var metade = '';
+      for (var i = 0; i < 5; i++) metade += bloco;
+      corrida.innerHTML = metade + metade;   // duplicado: laço sem emenda
+    } else {
+      document.getElementById('canto-flip').innerHTML = campos(fim - new Date());
+    }
+
+    setInterval(function () {
+      var agora = new Date();
+      if (agora > fim) {
+        document.body.removeAttribute('data-aviso');
+        return;
+      }
+      if (AVISO === 'tira') {
+        var v = texto();
+        var todos = document.querySelectorAll('.tira .conta');
+        for (var i = 0; i < todos.length; i++) todos[i].textContent = v;
+      } else {
+        var t = parte(fim - agora);
+        var abas = document.querySelectorAll('#canto-flip .face b');
+        abas[0].textContent = doisD(t.d);
+        abas[1].textContent = doisD(t.h);
+        abas[2].textContent = doisD(t.m);
+        abas[3].textContent = doisD(t.s);
+      }
+    }, 1000);
+  })();
+
+  /* ── entrada suave ─────────────────────────────────── */
+  var alvos = document.querySelectorAll('.sobe');
+  var semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                  || /(?:\?|&)semanim/.test(location.search);
+  if (semMovimento || !('IntersectionObserver' in window)) return;
+
+  raiz.classList.add('js');
+  var resgate = setTimeout(function () {
+    alvos.forEach(function (el) { el.classList.add('visivel'); });
+  }, 600);
+
+  var obs = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e, i) {
+      if (!e.isIntersecting) return;
+      clearTimeout(resgate);
+      setTimeout(function () { e.target.classList.add('visivel'); }, i * 80);
+      obs.unobserve(e.target);
+    });
+  }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
+
+  alvos.forEach(function (el) { obs.observe(el); });
+})();
+</script>
+
+</body>
+</html>
