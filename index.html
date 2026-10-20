@@ -190,6 +190,8 @@
   }
 
   @media (prefers-reduced-motion:reduce){
+    .parte,.parte:hover,.parte:focus-within{transform:none!important;}
+    .parte .livro{transition:none!important;}
     .tira .corrida{animation:none!important;}
   }
 
@@ -251,18 +253,63 @@
     -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
     mask-composite:exclude;}
 
-  .parte[data-estado="liberado"]:hover,
-  .parte[data-estado="liberado"]:focus-within{
+  /* ── halo ao destacar o cartao ────────────────────────
+     O cartao tem overflow:hidden, entao o brilho de fora
+     precisa ser box-shadow: a sombra do proprio elemento nao
+     e recortada pelo overflow dele, ao contrario do ::after.
+     O :hover so vale onde existe mouse, senao ele gruda no
+     toque; o :focus-within entra sempre, para o teclado.
+     .parte-aceso forca o mesmo estado por classe: serve para
+     conferir o efeito sem mouse, em captura de tela ou no
+     celular. Nada no site adiciona essa classe sozinho. */
+
+  /* travado: acende, mas contido, para continuar lendo como travado */
+  .parte:focus-within,
+  .parte-aceso{
+    border-color:#50401F;
+    box-shadow:
+      0 22px 48px -30px rgba(0,0,0,.95),
+      0 0 46px -8px rgba(213,171,105,.32),
+      0 0 96px -22px rgba(213,171,105,.24);}
+  .parte:focus-within::after,
+  .parte-aceso::after{opacity:.55;}
+
+  /* liberado: sobe e brilha de verdade, e o convite da pagina */
+  .parte[data-estado="liberado"]:focus-within,
+  .parte[data-estado="liberado"].parte-aceso{
     transform:translateY(-4px);
-    box-shadow:0 26px 54px -28px rgba(176,128,52,.55);}
-  .parte[data-estado="liberado"]:hover::after,
-  .parte[data-estado="liberado"]:focus-within::after{opacity:1;}
-  .parte[data-estado="liberado"]:hover .livro{
+    border-color:#5C4829;
+    box-shadow:
+      0 30px 58px -26px rgba(0,0,0,.95),
+      0 0 52px -6px rgba(213,171,105,.38),
+      0 0 112px -22px rgba(213,171,105,.28);}
+  .parte[data-estado="liberado"]:focus-within::after,
+  .parte[data-estado="liberado"].parte-aceso::after{opacity:1;}
+  .parte[data-estado="liberado"]:focus-within .livro,
+  .parte[data-estado="liberado"].parte-aceso .livro{
     opacity:.66;filter:saturate(1) brightness(1.08);transform:rotate(-4deg) scale(1.07);}
 
-  /* bloqueado: livro mais apagado, acende de leve ao passar o mouse */
+  /* bloqueado: livro mais apagado */
   .parte[data-estado="bloqueado"] .livro{opacity:.2;filter:grayscale(.65) brightness(.66);}
-  .parte[data-estado="bloqueado"]:hover .livro{opacity:.34;filter:grayscale(.25) brightness(.84);}
+
+  /* mesmo destaque no mouse, so onde mouse existe de verdade */
+  @media (hover:hover){
+    .parte:hover{border-color:#50401F;
+      box-shadow:
+        0 22px 48px -30px rgba(0,0,0,.95),
+        0 0 46px -8px rgba(213,171,105,.32),
+        0 0 96px -22px rgba(213,171,105,.24);}
+    .parte:hover::after{opacity:.55;}
+    .parte[data-estado="liberado"]:hover{transform:translateY(-4px);border-color:#5C4829;
+      box-shadow:
+        0 30px 58px -26px rgba(0,0,0,.95),
+        0 0 52px -6px rgba(213,171,105,.38),
+        0 0 112px -22px rgba(213,171,105,.28);}
+    .parte[data-estado="liberado"]:hover::after{opacity:1;}
+    .parte[data-estado="liberado"]:hover .livro{
+      opacity:.66;filter:saturate(1) brightness(1.08);transform:rotate(-4deg) scale(1.07);}
+    .parte[data-estado="bloqueado"]:hover .livro{opacity:.34;filter:grayscale(.25) brightness(.84);}
+  }
 
   /* bloqueio sutil: mesma caixa, so o peso da cor muda */
   .parte[data-estado="bloqueado"]{border-color:#251D13;}
