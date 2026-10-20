@@ -521,10 +521,12 @@
     <section class="heroi">
       <img class="wm" src="assets/wordmark-horizontal.png" alt="Black Book Tutory" width="380" height="62">
       <div class="sobrancelha"><i></i><span>Seu material está aqui</span><i></i></div>
-      <h1>Baixe o livro que você<br><b>acompanhou ao vivo.</b></h1>
+      <h1>Estratégia de quem vende educação.<br><b>Agora na sua mão.</b></h1>
       <p class="lead">
-        As três partes do Black Book. Uma abre por noite, e para
-        entrar em cada uma você usa a <strong>senha que a gente anuncia ao vivo</strong>.
+        O Black Book reúne estratégias validadas no mercado educacional.
+        A <strong>Tutory Hub</strong> é a estrutura para aplicá-las com a sua marca,
+        do posicionamento à entrega. Juntos, transformam o que você ensina
+        em um negócio à altura do seu método.
       </p>
     </section>
 
@@ -634,16 +636,16 @@
   var FRASE   = 'O sistema se encerrará às 10h do dia 23';
 
   var PARTES = [
-    { n:1, titulo:'O tabuleiro',     texto:'As novidades da plataforma e o terreno onde a sua oferta vai ser construída.',
-      noite:'Noite 1 · 20 de outubro', quando:'20 de outubro às 20h', livro:'assets/livro-1.png',
+    { n:1, titulo:'O Ponto de Partida', texto:'Onde a sua Black começa: o que muda quando a estratégia é feita para quem vende educação.',
+      noite:'Noite 1 · 20 de outubro', quando:'Libera terça, 20/10, ao fim da live', livro:'assets/livro-1.png',
       abre:'2026-10-20T20:00:00-03:00', fecha:'2026-10-21T10:00:00-03:00' },
 
-    { n:2, titulo:'Os movimentos',   texto:'Como construir a oferta, aquecer a audiência e conduzir o aluno até a decisão.',
-      noite:'Noite 2 · 21 de outubro', quando:'21 de outubro às 20h', livro:'assets/livro-2.png',
+    { n:2, titulo:'A Rota', texto:'A estratégia ganha profundidade. Os movimentos que levam o seu aluno até a decisão.',
+      noite:'Noite 2 · 21 de outubro', quando:'Libera quarta, 21/10, ao fim da live', livro:'assets/livro-2.png',
       abre:'2026-10-21T20:00:00-03:00', fecha:'2026-10-22T10:00:00-03:00' },
 
-    { n:3, titulo:'O passo a passo', texto:'A Sala de Guerra: cases reais e o roteiro para colocar tudo em prática.',
-      noite:'Noite 3 · 22 de outubro', quando:'22 de outubro às 17h', livro:'assets/livro-3.png',
+    { n:3, titulo:'O Fechamento', texto:'Direto da Sala de Guerra: cases reais e o roteiro para colocar tudo em prática.',
+      noite:'Noite 3 · 22 de outubro', quando:'Libera quinta, 22/10, ao fim da Sala de Guerra', livro:'assets/livro-3.png',
       abre:'2026-10-22T17:00:00-03:00', fecha:'2026-10-23T10:00:00-03:00' }
   ];
 
@@ -744,13 +746,13 @@
     var botao;
     if (aberto) {
       botao = '<button class="acao liberar" type="button" data-parte="' + p.n + '">' +
-              SETA + 'Baixar a Parte ' + p.n + '</button>';
+              SETA + 'Liberar a Parte ' + p.n + '</button>';
     } else if (fase === 'fim') {
       botao = '<button class="acao travado" type="button" disabled aria-disabled="true">' +
               CADEADO + 'Download encerrado</button>';
     } else {
       botao = '<button class="acao travado" type="button" disabled aria-disabled="true">' +
-              CADEADO + 'Abre ' + p.quando + '</button>';
+              CADEADO + p.quando + '</button>';
     }
 
     return '<span class="livro" aria-hidden="true" style="background-image:url(' + p.livro + ')"></span>' +
