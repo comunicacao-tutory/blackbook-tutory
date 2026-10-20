@@ -15,6 +15,10 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icone/favicon-48.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/icone/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+
+<!-- contagem de visitas da propria Vercel: sem cookie, sem dado pessoal.
+     Precisa estar ligado em Analytics no painel do projeto. -->
+<script defer src="/_vercel/insights/script.js"></script>
 <meta name="description" content="Baixe as três partes do Black Book Tutory. Estratégia de Black Friday para quem vende educação.">
 <meta property="og:title" content="Black Book Tutory — baixe o seu">
 <meta property="og:description" content="As três partes do Black Book. Estratégia para quem vende educação.">
@@ -622,7 +626,7 @@
         white-label para quem vende conhecimento: a sua marca, os seus alunos, o seu
         negócio. Sem disputar espaço com quem vende qualquer coisa.
       </p>
-      <a class="botao" href="https://www.tutory.com.br/produtos/hub" target="_blank" rel="noopener">
+      <a class="botao" id="btn-hub" href="https://www.tutory.com.br/produtos/hub" target="_blank" rel="noopener">
         Conhecer a Tutory Hub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
@@ -717,6 +721,21 @@
      dela. Rode  python3 gerar-chave.py "sua senha"  para saber
      com que nome salvar cada arquivo.
      ══════════════════════════════════════════════════════ */
+
+  /* ── rastreio ────────────────────────────────────────
+     Preencha GA4 com o ID de medicao (G-XXXXXXX) para contar
+     download. Vazio = desligado, e a pagina segue igual.
+     Nada aqui guarda senha, nome, e-mail ou IP.            */
+  var GA4 = '';
+
+  /* marcar() nunca pode derrubar o download: tudo em try/catch,
+     e qualquer falha e engolida de proposito. */
+  function marcar(evento, dados) {
+    try {
+      if (window.gtag) window.gtag('event', evento, dados || {});
+      if (window.va) window.va('event', { name: evento, data: dados || {} });
+    } catch (e) { /* rastreio e secundario, segue o jogo */ }
+  }
 
   var SAL = 'blackbook-tutory-2026';   // idêntico ao SAL do gerar-chave.py
 
@@ -899,6 +918,7 @@
 
   /* ── diálogo ───────────────────────────────────────── */
   function abrir(n) {
+    marcar('abriu_senha', { parte: n });
     parteAtual = n;
     ultimoFoco = document.activeElement;
     dlgQual.textContent = 'Parte ' + n;
@@ -967,6 +987,7 @@
       return fetch(caminho, { method:'HEAD', cache:'no-store' }).then(function (r) {
         if (!r.ok) throw new Error('nao encontrado');
         caminhoPronto = caminho;
+        marcar('senha_ok', { parte: parteAtual });
         confTexto.textContent =
           'Você deseja baixar o Black Book parte ' + parteAtual + ' completo?';
         passoSenha.hidden = true;
@@ -976,6 +997,7 @@
         setTimeout(function () { btnSim.focus(); }, 40);
       });
     }).catch(function () {
+      marcar('senha_errada', { parte: parteAtual });
       erro('Essa senha não abre esta parte. Confira e tente de novo.');
       campo.select(); campo.focus();
     }).then(function () {
@@ -988,6 +1010,9 @@
 
   btnNao.addEventListener('click', fechar);
 
+  var btnHub = document.getElementById('btn-hub');
+  if (btnHub) btnHub.addEventListener('click', function () { marcar('clicou_hub'); });
+
   btnSim.addEventListener('click', function () {
     if (!caminhoPronto) return;
     btnSim.disabled = true;
@@ -996,6 +1021,8 @@
     a.href = caminhoPronto;
     a.download = 'Black Book Tutory, Encontro ' + parteAtual + '.pdf';
     document.body.appendChild(a); a.click(); a.remove();
+    /* so depois de disparar o download: o numero e secundario */
+    marcar('baixou', { parte: parteAtual });
     setTimeout(fechar, 900);
   });
 
