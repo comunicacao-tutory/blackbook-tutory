@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/pdfs/41aebc4281074ff3edff.pdf",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"Black Book Tutory, Encontro 1.pdf\"; filename*=UTF-8''Black%20Book%20Tutory%2C%20Encontro%201.pdf"
+        }
+      ]
+    }
+  ]
+}
