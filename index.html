@@ -390,6 +390,49 @@
   .nota strong{color:var(--texto);font-weight:700;}
 
   /* ── rodapé ─────────────────────────────────────────── */
+
+  /* ── convite para a Hub, o passo seguinte ao livro ───── */
+  .hub{position:relative;max-width:760px;margin:var(--s-5) auto 0;
+    padding:var(--s-4) var(--s-4) calc(var(--s-4) - 4px);
+    border-radius:var(--raio);text-align:center;isolation:isolate;overflow:hidden;
+    background:
+      radial-gradient(520px 200px at 50% 0%, rgba(213,171,105,.09) 0%, rgba(0,0,0,0) 72%),
+      linear-gradient(168deg, rgba(20,16,10,.92) 0%, rgba(10,8,5,.95) 62%, rgba(7,5,4,.96) 100%);}
+
+  /* fio de borda em degrade, mais forte em cima */
+  .hub::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1px;
+    background:linear-gradient(168deg,rgba(242,224,182,.34),rgba(213,171,105,.14) 44%,rgba(213,171,105,.04) 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    mask-composite:exclude;}
+
+  .hub .risco{width:34px;height:2px;margin:0 auto var(--s-3);border-radius:2px;
+    background:linear-gradient(90deg,rgba(213,171,105,.15),var(--dourado),rgba(213,171,105,.15));}
+
+  .hub h2{font-size:clamp(20px,3.4vw,29px);line-height:1.22;font-weight:300;color:#fff;
+    letter-spacing:-.01em;text-wrap:balance;}
+  .hub h2 b{font-weight:800;display:inline-block;transform:skewX(-10deg);}
+
+  .hub p{margin:var(--s-3) auto 0;max-width:58ch;font-size:clamp(14px,2.3vw,16px);
+    line-height:1.65;color:var(--mudo);text-wrap:pretty;}
+  .hub p strong{color:var(--texto);font-weight:700;}
+
+  /* secundario de proposito: o download continua sendo a acao principal */
+  .hub .botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    margin-top:var(--s-4);min-height:48px;padding:14px 28px;border-radius:999px;
+    font-size:clamp(11.5px,2.6vw,12.5px);font-weight:800;letter-spacing:.14em;
+    text-transform:uppercase;text-decoration:none;color:var(--champanhe);
+    border:1px solid rgba(213,171,105,.42);background:rgba(213,171,105,.07);
+    transition:background var(--t),border-color var(--t),color var(--t),transform var(--t);}
+  .hub .botao svg{width:16px;height:16px;flex:none;}
+  .hub .botao:hover{background:rgba(213,171,105,.14);border-color:rgba(242,224,182,.7);
+    color:#fff;transform:translateY(-2px);}
+
+  @media (max-width:560px){
+    .hub{padding:var(--s-3) var(--s-3) calc(var(--s-3) + 4px);margin-top:var(--s-4);}
+    .hub .botao{width:100%;padding:14px 18px;}
+  }
+
   .rodape{padding-top:var(--s-6);padding-bottom:var(--s-5);text-align:center;}
   .rodape .risco{width:46px;height:2px;margin:0 auto var(--s-4);border-radius:2px;
     background:linear-gradient(90deg,rgba(213,171,105,.15),var(--dourado),rgba(213,171,105,.15));}
@@ -536,6 +579,21 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
       <p><strong>Quem vê uma noite leva uma peça. Quem vê as três leva o mapa.</strong> Cada parte só faz sentido completo junto com as outras.</p>
     </div>
+
+    <section class="hub sobe" aria-labelledby="hub-titulo">
+      <div class="risco" aria-hidden="true"></div>
+      <h2 id="hub-titulo">A estratégia certa precisa de<br><b>uma plataforma à altura.</b></h2>
+      <p>
+        Tudo o que você viu no Black Book funciona melhor quando o seu conteúdo está
+        numa estrutura feita para educação. A <strong>Tutory Hub</strong> é a plataforma
+        white-label para quem vende conhecimento: a sua marca, os seus alunos, o seu
+        negócio. Sem disputar espaço com quem vende qualquer coisa.
+      </p>
+      <a class="botao" href="https://www.tutory.com.br/produtos/hub" target="_blank" rel="noopener">
+        Conhecer a Tutory Hub
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </section>
 
   </main>
 
@@ -980,6 +1038,16 @@
   }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
 
   alvos.forEach(function (el) { obs.observe(el); });
+
+  /* trava final: a entrada suave depende de uma transicao CSS terminar.
+     Se o navegador congelar ou pular a transicao (aba em segundo plano,
+     economia de bateria), o conteudo ficaria invisivel para sempre.
+     Passados 8s tiramos o 'js' do html: .sobe volta a opacity:1 sem
+     depender de animacao nenhuma. Quem rolou antes disso ja viu o efeito. */
+  setTimeout(function () {
+    raiz.classList.remove('js');
+    alvos.forEach(function (el) { el.classList.add('visivel'); });
+  }, 8000);
 })();
 </script>
 
