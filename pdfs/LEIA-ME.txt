@@ -1,20 +1,24 @@
 Os PDFs desta pasta nao usam nome legivel de proposito.
 
-O nome de cada arquivo vem do SHA-256 do sal mais a palavra-chave que
-voce anuncia ao vivo. Assim a URL do PDF nao aparece no codigo-fonte
-da pagina, e quem nao ouviu a palavra nao consegue montar o endereco.
+O nome vem do SHA-256 de sal + numero da parte + palavra-chave.
+A URL do PDF nao aparece no codigo-fonte da pagina, e quem nao
+ouviu a palavra nao consegue montar o endereco.
 
-Para publicar o PDF de uma noite:
+Palavras em uso:
 
-  1. python3 gerar-chave.py "a palavra da noite"
-  2. renomeie o PDF para o nome que o script imprimiu
-  3. coloque o arquivo aqui em pdfs/
-  4. git add . && git commit -m "parte 1" && git push
-     (a Vercel publica sozinha a cada push)
+  parte 1  Tutoryhub   ->  2192cf06dd78d67ae202.pdf   (20/10)
+  parte 2  Tutoryhub2  ->  14640f0f2bc8b98ad0ad.pdf   (21/10)
+  parte 3  Tutoryhub3  ->  cb1d3554a6d9355b3484.pdf   (22/10)
 
-O arquivo 2192cf06dd78d67ae202.pdf tem 25 bytes e e so um placeholder
-da Parte 1 (palavra da noite), usado para testar o fluxo. Apague quando os
-PDFs de verdade entrarem.
+Para trocar a palavra de uma noite:
 
-Lembrete: isso esconde o arquivo, nao protege o arquivo. Quem recebeu
-a palavra pode repassar o link para qualquer pessoa.
+  1. python3 gerar-chave.py "a palavra nova"
+  2. renomeie o PDF daquela parte para o nome impresso
+  3. ajuste o vercel.json, que define o nome do download
+  4. git add . && git commit && git push
+
+A normalizacao ignora maiuscula, acento e espaco: "Tutory Hub 2"
+e "tutoryhub2" abrem o mesmo arquivo.
+
+Lembrete: isso esconde o arquivo, nao protege o arquivo. Quem
+recebeu a palavra pode repassar o link para qualquer pessoa.
