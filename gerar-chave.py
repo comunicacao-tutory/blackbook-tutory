@@ -27,9 +27,12 @@ def normalizar(palavra: str) -> str:
     return "".join(c for c in sem_acento if c.isalnum())
 
 
-def nome_arquivo(palavra: str) -> str:
+def nome_arquivo(palavra: str, parte: int) -> str:
+    """O numero da parte entra no hash: a mesma palavra em partes
+    diferentes gera arquivos diferentes."""
     base = normalizar(palavra)
-    digest = hashlib.sha256((SAL + base).encode("utf-8")).hexdigest()
+    semente = "%s:%d:%s" % (SAL, parte, base)
+    digest = hashlib.sha256(semente.encode("utf-8")).hexdigest()
     return digest[:20] + ".pdf"
 
 
@@ -46,7 +49,8 @@ def main() -> int:
             continue
         print(f'  palavra-chave : "{palavra}"')
         print(f'  normalizada   : {base}')
-        print(f'  renomeie o PDF para -> pdfs/{nome_arquivo(palavra)}')
+        for parte in (1, 2, 3):
+            print(f'    parte {parte} -> pdfs/{nome_arquivo(palavra, parte)}')
         print()
 
     print("  Coloque os arquivos renomeados em lp-blackbook/pdfs/ e publique.")

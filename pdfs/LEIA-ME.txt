@@ -12,8 +12,8 @@ Para publicar o PDF de uma noite:
   4. git add . && git commit -m "parte 1" && git push
      (a Vercel publica sozinha a cada push)
 
-O arquivo 41aebc4281074ff3edff.pdf tem 25 bytes e e so um placeholder
-da Parte 1 (palavra "Tutoryhub"), usado para testar o fluxo. Apague quando os
+O arquivo 2192cf06dd78d67ae202.pdf tem 25 bytes e e so um placeholder
+da Parte 1 (palavra da noite), usado para testar o fluxo. Apague quando os
 PDFs de verdade entrarem.
 
 Lembrete: isso esconde o arquivo, nao protege o arquivo. Quem recebeu

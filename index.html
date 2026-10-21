@@ -813,10 +813,13 @@
     }).join('');
   }
 
-  function caminhoDo(palavra) {
+  /* O numero da parte entra no hash. Assim a mesma palavra em partes
+     diferentes gera arquivos diferentes, e trocar por senhas distintas
+     depois nao exige mudar nada aqui. */
+  function caminhoDo(palavra, parte) {
     var base = normalizar(palavra);
     if (!base) return Promise.resolve(null);
-    var dados = new TextEncoder().encode(SAL + base);
+    var dados = new TextEncoder().encode(SAL + ':' + parte + ':' + base);
     return crypto.subtle.digest('SHA-256', dados).then(function (buf) {
       return 'pdfs/' + hex(buf).slice(0, 20) + '.pdf';
     });
@@ -1002,7 +1005,7 @@
     rotulo.textContent = 'Conferindo…';
     limparRecado();
 
-    caminhoDo(palavra).then(function (caminho) {
+    caminhoDo(palavra, parteAtual).then(function (caminho) {
       return fetch(caminho, { method:'HEAD', cache:'no-store' }).then(function (r) {
         if (!r.ok) throw new Error('nao encontrado');
         caminhoPronto = caminho;
