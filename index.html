@@ -726,7 +726,26 @@
      Preencha GA4 com o ID de medicao (G-XXXXXXX) para contar
      download. Vazio = desligado, e a pagina segue igual.
      Nada aqui guarda senha, nome, e-mail ou IP.            */
-  var GA4 = '';
+  var GA4 = 'G-M24X15R6CJ';
+
+  /* carrega o GA so se houver ID. Desligamos sinais de anuncio:
+     aqui a gente quer contagem, nao publico de remarketing. */
+  (function carregaGA() {
+    if (!GA4) return;
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', GA4, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
+      var t = document.createElement('script');
+      t.async = true;
+      t.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4;
+      document.head.appendChild(t);
+    } catch (e) { /* sem rastreio a pagina funciona igual */ }
+  })();
 
   /* marcar() nunca pode derrubar o download: tudo em try/catch,
      e qualquer falha e engolida de proposito. */
