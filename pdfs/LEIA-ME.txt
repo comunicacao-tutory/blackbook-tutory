@@ -1,14 +1,17 @@
 Os PDFs desta pasta nao usam nome legivel de proposito.
 
 O nome vem do SHA-256 de sal + numero da parte + palavra-chave.
-A URL do PDF nao aparece no codigo-fonte da pagina, e quem nao
-ouviu a palavra nao consegue montar o endereco.
+A URL nao aparece no codigo-fonte, e quem nao ouviu a palavra nao
+consegue montar o endereco.
 
-Palavras em uso:
+Palavra em uso: Tutoryhub nas tres noites.
 
-  parte 1  Tutoryhub   ->  2192cf06dd78d67ae202.pdf   (20/10)
-  parte 2  Tutoryhub2  ->  14640f0f2bc8b98ad0ad.pdf   (21/10)
-  parte 3  Tutoryhub3  ->  cb1d3554a6d9355b3484.pdf   (22/10)
+  parte 1  ->  2192cf06dd78d67ae202.pdf   (20/10)
+  parte 2  ->  e932970ec75a1f7ff841.pdf   (21/10)
+  parte 3  ->  7545da6110217d6c70c5.pdf   (22/10)
+
+O numero da parte entra no hash, entao a mesma palavra gera tres
+arquivos diferentes. Cada parte entrega o seu encontro.
 
 Para trocar a palavra de uma noite:
 
@@ -17,8 +20,8 @@ Para trocar a palavra de uma noite:
   3. ajuste o vercel.json, que define o nome do download
   4. git add . && git commit && git push
 
-A normalizacao ignora maiuscula, acento e espaco: "Tutory Hub 2"
-e "tutoryhub2" abrem o mesmo arquivo.
+A normalizacao ignora maiuscula, acento e espaco: "Tutory Hub" e
+"tutoryhub" abrem o mesmo arquivo.
 
 Lembrete: isso esconde o arquivo, nao protege o arquivo. Quem
 recebeu a palavra pode repassar o link para qualquer pessoa.
